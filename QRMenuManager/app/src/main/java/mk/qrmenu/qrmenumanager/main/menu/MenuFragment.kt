@@ -16,6 +16,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.launch
 import mk.qrmenu.qrmenumanager.R
 import mk.qrmenu.qrmenumanager.databinding.FragmentMenuBinding
@@ -48,7 +49,7 @@ class MenuFragment : Fragment() {
             )
         }
 
-        binding.recycler.layoutManager = GridLayoutManager(requireContext(), 2)
+        binding.recycler.layoutManager = LinearLayoutManager(requireContext())
         binding.recycler.adapter = adapter
 
         binding.fabAdd.setOnClickListener {

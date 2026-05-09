@@ -150,23 +150,23 @@ class AddEditProductViewModel : ViewModel() {
                     .collection("items")
                 val docId = editingId ?: collection.document().id
 
-                var imageUrl = state.imageUrl
-                val localUri = state.localImageUri
-                if (localUri != null) {
-                    val bytes = withContext(Dispatchers.IO) {
-                        compressImage(context, localUri)
-                    }
-                    val ref = storage.reference.child("users/$uid/items/$docId.jpg")
-                    ref.putBytes(bytes).await()
-                    imageUrl = ref.downloadUrl.await().toString()
-                }
+//                var imageUrl = state.imageUrl
+//                val localUri = state.localImageUri
+//                if (localUri != null) {
+//                    val bytes = withContext(Dispatchers.IO) {
+//                        compressImage(context, localUri)
+//                    }
+//                    val ref = storage.reference.child("users/$uid/items/$docId.jpg")
+//                    ref.putBytes(bytes).await()
+//                    imageUrl = ref.downloadUrl.await().toString()
+//                }
 
                 val product = Product(
                     id = docId,
                     title = state.title.trim(),
                     description = state.description.trim(),
                     price = price!!,
-                    imageUrl = imageUrl,
+                    imageUrl = "",
                 )
                 collection.document(docId).set(product).await()
 

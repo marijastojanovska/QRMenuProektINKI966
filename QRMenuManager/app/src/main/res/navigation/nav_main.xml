@@ -14,7 +14,17 @@
         <action
             android:id="@+id/action_menu_to_addEdit"
             app:destination="@id/addEditProductFragment" />
+
+        <action
+            android:id="@+id/action_menu_to_qrCode"
+            app:destination="@id/qrCodeFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/qrCodeFragment"
+        android:name="mk.qrmenu.qrmenumanager.main.qr.QrCodeFragment"
+        android:label="@string/title_qr_code"
+        tools:layout="@layout/fragment_qr_code" />
 
     <fragment
         android:id="@+id/addEditProductFragment"
