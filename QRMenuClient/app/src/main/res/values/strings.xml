@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">QRMenuClient</string>
+    <string name="menu_title">Menu</string>
+    <string name="scan_qr_code">Scan QR Code</string>
+    <string name="cd_product_image">Product image</string>
+    <string name="cd_scan_icon">Scan icon</string>
+    <string name="empty_menu_hint">Scan a QR code to load a menu</string>
+    <string name="empty_menu_after_scan">No items found for this menu</string>
+    <string name="error_load_menu">Could not load menu. Check your connection and try again.</string>
+    <string name="error_invalid_qr">QR code is not valid</string>
+    <string name="action_retry">Retry</string>
 </resources>

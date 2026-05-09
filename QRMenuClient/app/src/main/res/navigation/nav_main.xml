@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/menuFragment">
+
+    <fragment
+        android:id="@+id/menuFragment"
+        android:name="mk.qrmenu.qrmenuclient.menu.MenuFragment"
+        android:label="@string/menu_title"
+        tools:layout="@layout/fragment_menu"
+        xmlns:tools="http://schemas.android.com/tools" />
+
+</navigation>
