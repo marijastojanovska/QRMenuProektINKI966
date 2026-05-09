@@ -30,7 +30,7 @@ class MenuAdapter : ListAdapter<Product, MenuAdapter.ProductViewHolder>(DiffCall
     ) : RecyclerView.ViewHolder(binding.root) {
 
         private val priceFormatter: NumberFormat =
-            NumberFormat.getCurrencyInstance(Locale.getDefault())
+            NumberFormat.getCurrencyInstance(Locale.US)
 
         fun bind(product: Product) {
             binding.txtTitle.text = product.title
