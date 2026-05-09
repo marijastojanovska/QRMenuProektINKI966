@@ -8,8 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
-import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -33,16 +31,7 @@ class AddEditProductFragment : Fragment() {
     private val args: AddEditProductFragmentArgs by navArgs()
     private val viewModel: AddEditProductViewModel by viewModels()
 
-    private val pickMedia = registerForActivityResult(PickVisualMedia()) { uri ->
-        if (uri != null) {
-            viewModel.onImagePicked(uri)
-            Glide.with(this)
-                .load(uri)
-                .placeholder(R.drawable.ic_image_placeholder)
-                .centerCrop()
-                .into(binding.imgPreview)
-        }
-    }
+    private var lastLoadedImageUrl: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -66,16 +55,13 @@ class AddEditProductFragment : Fragment() {
 
         viewModel.setEditMode(productId)
 
-        binding.btnPickImage.setOnClickListener {
-            pickMedia.launch(PickVisualMediaRequest(PickVisualMedia.ImageOnly))
-        }
-
         binding.inputTitle.addTextChangedListener(simpleWatcher { viewModel.onTitleChanged(it) })
         binding.inputDescription.addTextChangedListener(simpleWatcher { viewModel.onDescriptionChanged(it) })
         binding.inputPrice.addTextChangedListener(simpleWatcher { viewModel.onPriceChanged(it) })
+        binding.inputImageUrl.addTextChangedListener(simpleWatcher { viewModel.onImageUrlChanged(it) })
 
         binding.btnSave.setOnClickListener {
-            viewModel.save(requireContext().applicationContext)
+            viewModel.save()
         }
 
         binding.btnDelete.setOnClickListener {
@@ -98,20 +84,9 @@ class AddEditProductFragment : Fragment() {
                         binding.inputTitle.setTextIfChanged(state.title)
                         binding.inputDescription.setTextIfChanged(state.description)
                         binding.inputPrice.setTextIfChanged(state.priceText)
+                        binding.inputImageUrl.setTextIfChanged(state.imageUrl)
 
-                        if (state.localImageUri != null) {
-                            Glide.with(this@AddEditProductFragment)
-                                .load(state.localImageUri)
-                                .placeholder(R.drawable.ic_image_placeholder)
-                                .centerCrop()
-                                .into(binding.imgPreview)
-                        } else if (state.imageUrl.isNotBlank()) {
-                            Glide.with(this@AddEditProductFragment)
-                                .load(state.imageUrl)
-                                .placeholder(R.drawable.ic_image_placeholder)
-                                .centerCrop()
-                                .into(binding.imgPreview)
-                        }
+                        updatePreview(state.imageUrl)
                     }
                 }
 
@@ -134,6 +109,23 @@ class AddEditProductFragment : Fragment() {
                     }
                 }
             }
+        }
+    }
+
+    private fun updatePreview(url: String) {
+        val trimmed = url.trim()
+        if (trimmed == lastLoadedImageUrl) return
+        lastLoadedImageUrl = trimmed
+        if (trimmed.isBlank()) {
+            Glide.with(this).clear(binding.imgPreview)
+            binding.imgPreview.setImageResource(R.drawable.ic_image_placeholder)
+        } else {
+            Glide.with(this)
+                .load(trimmed)
+                .placeholder(R.drawable.ic_image_placeholder)
+                .error(R.drawable.ic_image_placeholder)
+                .centerCrop()
+                .into(binding.imgPreview)
         }
     }
 
