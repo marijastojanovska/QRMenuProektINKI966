@@ -1,10 +1,10 @@
 <resources>
-    <string name="app_name">QRMenuManager</string>
+    <string name="app_name">Scan2EatManager</string>
 
     <!-- Titles -->
     <string name="title_login">Login</string>
     <string name="title_register">Register</string>
-    <string name="title_menu">Menu</string>
+    <string name="title_menu">Menu manager</string>
     <string name="title_add_product">Add Product</string>
     <string name="title_edit_product">Edit Product</string>
     <string name="title_qr_code">Menu QR Code</string>
@@ -17,6 +17,13 @@
     <string name="hint_description">Description</string>
     <string name="hint_price">Price</string>
     <string name="hint_image_url">Image URL</string>
+    <string name="hint_category">Category</string>
+
+    <!-- Categories -->
+    <string name="category_all">All</string>
+    <string name="category_coffee">Coffee</string>
+    <string name="category_drinks">Drinks</string>
+    <string name="category_food">Food</string>
 
     <!-- Actions -->
     <string name="action_login">Login</string>
@@ -38,6 +45,7 @@
     <string name="error_title_required">Title is required</string>
     <string name="error_price_invalid">Enter a price greater than 0</string>
     <string name="error_image_required">Image URL is required</string>
+    <string name="error_category_required">Choose a category</string>
     <string name="error_unknown">Something went wrong</string>
 
     <!-- Confirmations -->

@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import mk.qrmenu.qrmenumanager.R
+import mk.qrmenu.qrmenumanager.model.Category
 import mk.qrmenu.qrmenumanager.model.Product
 
 data class FormState(
@@ -21,6 +22,7 @@ data class FormState(
     val description: String = "",
     val priceText: String = "",
     val imageUrl: String = "",
+    val category: Category? = null,
     val isLoading: Boolean = false,
     val isEdit: Boolean = false,
     val loadedFromRemote: Boolean = false,
@@ -30,9 +32,10 @@ data class ValidationErrors(
     val titleErr: Int? = null,
     val priceErr: Int? = null,
     val imageErr: Int? = null,
+    val categoryErr: Int? = null,
 ) {
     val hasError: Boolean
-        get() = titleErr != null || priceErr != null || imageErr != null
+        get() = titleErr != null || priceErr != null || imageErr != null || categoryErr != null
 }
 
 sealed interface UiEvent {
@@ -83,6 +86,7 @@ class AddEditProductViewModel : ViewModel() {
                             description = product.description,
                             priceText = if (product.price > 0.0) product.price.toString() else "",
                             imageUrl = product.imageUrl,
+                            category = Category.fromStorage(product.category),
                             isLoading = false,
                             loadedFromRemote = true,
                         )
@@ -117,6 +121,11 @@ class AddEditProductViewModel : ViewModel() {
         }
     }
 
+    fun onCategoryChanged(category: Category) {
+        _form.update { it.copy(category = category) }
+        _errors.update { it.copy(categoryErr = null) }
+    }
+
     fun save() {
         val state = _form.value
         val uid = auth.currentUser?.uid ?: run {
@@ -130,6 +139,7 @@ class AddEditProductViewModel : ViewModel() {
             titleErr = if (state.title.isBlank()) R.string.error_title_required else null,
             priceErr = if (price == null || price <= 0.0) R.string.error_price_invalid else null,
             imageErr = if (trimmedUrl.isBlank()) R.string.error_image_required else null,
+            categoryErr = if (state.category == null) R.string.error_category_required else null,
         )
         _errors.value = errors
         if (errors.hasError) return
@@ -148,6 +158,7 @@ class AddEditProductViewModel : ViewModel() {
                     description = state.description.trim(),
                     price = price!!,
                     imageUrl = trimmedUrl,
+                    category = state.category!!.name,
                 )
                 collection.document(docId).set(product).await()
 

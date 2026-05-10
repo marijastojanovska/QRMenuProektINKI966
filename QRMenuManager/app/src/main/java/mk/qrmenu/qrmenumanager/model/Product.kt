@@ -13,5 +13,6 @@ data class Product(
     var description: String = "",
     var price: Double = 0.0,
     var imageUrl: String = "",
+    var category: String = "",
     @ServerTimestamp var createdAt: Date? = null,
 ) : Parcelable

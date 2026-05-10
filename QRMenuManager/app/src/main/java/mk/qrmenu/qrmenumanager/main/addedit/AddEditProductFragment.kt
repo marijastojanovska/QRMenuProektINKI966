@@ -22,6 +22,7 @@ import com.bumptech.glide.Glide
 import kotlinx.coroutines.launch
 import mk.qrmenu.qrmenumanager.R
 import mk.qrmenu.qrmenumanager.databinding.FragmentAddEditProductBinding
+import mk.qrmenu.qrmenumanager.model.Category
 
 class AddEditProductFragment : Fragment() {
 
@@ -60,6 +61,10 @@ class AddEditProductFragment : Fragment() {
         binding.inputPrice.addTextChangedListener(simpleWatcher { viewModel.onPriceChanged(it) })
         binding.inputImageUrl.addTextChangedListener(simpleWatcher { viewModel.onImageUrlChanged(it) })
 
+        binding.groupCategory.setOnCheckedStateChangeListener { _, checkedIds ->
+            categoryFromChipId(checkedIds.firstOrNull())?.let { viewModel.onCategoryChanged(it) }
+        }
+
         binding.btnSave.setOnClickListener {
             viewModel.save()
         }
@@ -86,6 +91,7 @@ class AddEditProductFragment : Fragment() {
                         binding.inputPrice.setTextIfChanged(state.priceText)
                         binding.inputImageUrl.setTextIfChanged(state.imageUrl)
 
+                        syncCategoryChip(state.category)
                         updatePreview(state.imageUrl)
                     }
                 }
@@ -96,6 +102,8 @@ class AddEditProductFragment : Fragment() {
                         binding.layoutPrice.error = errors.priceErr?.let { getString(it) }
                         binding.txtImageError.text = errors.imageErr?.let { getString(it) }
                         binding.txtImageError.isVisible = errors.imageErr != null
+                        binding.txtCategoryError.text = errors.categoryErr?.let { getString(it) }
+                        binding.txtCategoryError.isVisible = errors.categoryErr != null
                     }
                 }
 
@@ -109,6 +117,30 @@ class AddEditProductFragment : Fragment() {
                     }
                 }
             }
+        }
+    }
+
+    private fun categoryFromChipId(id: Int?): Category? = when (id) {
+        R.id.chip_category_coffee -> Category.COFFEE
+        R.id.chip_category_drinks -> Category.DRINKS
+        R.id.chip_category_food -> Category.FOOD
+        else -> null
+    }
+
+    private fun chipIdForCategory(category: Category?): Int = when (category) {
+        Category.COFFEE -> R.id.chip_category_coffee
+        Category.DRINKS -> R.id.chip_category_drinks
+        Category.FOOD -> R.id.chip_category_food
+        null -> View.NO_ID
+    }
+
+    private fun syncCategoryChip(category: Category?) {
+        val expected = chipIdForCategory(category)
+        if (binding.groupCategory.checkedChipId == expected) return
+        if (expected == View.NO_ID) {
+            binding.groupCategory.clearCheck()
+        } else {
+            binding.groupCategory.check(expected)
         }
     }
 

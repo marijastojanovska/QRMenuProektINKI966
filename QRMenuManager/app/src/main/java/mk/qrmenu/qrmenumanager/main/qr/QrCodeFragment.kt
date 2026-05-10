@@ -38,27 +38,27 @@ class QrCodeFragment : Fragment() {
 
         (activity as? AppCompatActivity)?.supportActionBar?.setTitle(R.string.title_qr_code)
 
-        binding.btnShare.setOnClickListener {
-            val content = viewModel.state.value.content
-            if (content.isNotBlank()) {
-                val intent = Intent(Intent.ACTION_SEND).apply {
-                    type = "text/plain"
-                    putExtra(Intent.EXTRA_TEXT, content)
-                }
-                startActivity(Intent.createChooser(intent, getString(R.string.action_share_id)))
-            }
-        }
+//        binding.btnShare.setOnClickListener {
+//            val content = viewModel.state.value.content
+//            if (content.isNotBlank()) {
+//                val intent = Intent(Intent.ACTION_SEND).apply {
+//                    type = "text/plain"
+//                    putExtra(Intent.EXTRA_TEXT, content)
+//                }
+//                startActivity(Intent.createChooser(intent, getString(R.string.action_share_id)))
+//            }
+//        }
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.state.collect { state ->
                     binding.progress.isVisible = state.isLoading
                     binding.imgQr.isVisible = state.bitmap != null
-                    binding.txtUrl.isVisible = state.content.isNotBlank()
-                    binding.btnShare.isEnabled = state.content.isNotBlank()
+                    //binding.txtUrl.isVisible = state.content.isNotBlank()
+                    //binding.btnShare.isEnabled = state.content.isNotBlank()
 
                     state.bitmap?.let { binding.imgQr.setImageBitmap(it) }
-                    binding.txtUrl.text = state.content
+                    //binding.txtUrl.text = state.content
                     state.errorMessage?.let {
                         Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
                     }

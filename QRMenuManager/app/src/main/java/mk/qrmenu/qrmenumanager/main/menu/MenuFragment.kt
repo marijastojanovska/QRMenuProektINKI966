@@ -16,10 +16,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.launch
 import mk.qrmenu.qrmenumanager.R
 import mk.qrmenu.qrmenumanager.databinding.FragmentMenuBinding
+import mk.qrmenu.qrmenumanager.model.Category
 
 class MenuFragment : Fragment() {
 
@@ -49,8 +49,13 @@ class MenuFragment : Fragment() {
             )
         }
 
-        binding.recycler.layoutManager = LinearLayoutManager(requireContext())
+        val columns = resources.getInteger(R.integer.menu_grid_columns)
+        binding.recycler.layoutManager = GridLayoutManager(requireContext(), columns)
         binding.recycler.adapter = adapter
+
+        binding.groupFilter.setOnCheckedStateChangeListener { _, checkedIds ->
+            viewModel.setCategoryFilter(filterCategoryFromChipId(checkedIds.firstOrNull()))
+        }
 
         binding.fabAdd.setOnClickListener {
             findNavController().navigate(
@@ -76,6 +81,13 @@ class MenuFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun filterCategoryFromChipId(id: Int?): Category? = when (id) {
+        R.id.chip_filter_coffee -> Category.COFFEE
+        R.id.chip_filter_drinks -> Category.DRINKS
+        R.id.chip_filter_food -> Category.FOOD
+        else -> null
     }
 
     override fun onDestroyView() {
