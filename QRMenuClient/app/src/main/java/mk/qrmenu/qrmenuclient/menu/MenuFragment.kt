@@ -9,17 +9,19 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.common.moduleinstall.ModuleInstall
 import com.google.android.gms.common.moduleinstall.ModuleInstallRequest
+import com.google.android.material.chip.Chip
+import com.google.android.material.snackbar.Snackbar
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 import mk.qrmenu.qrmenuclient.R
 import mk.qrmenu.qrmenuclient.databinding.FragmentMenuBinding
+import mk.qrmenu.qrmenuclient.menu.history.CachedMenusBottomSheet
+import mk.qrmenu.qrmenuclient.model.Category
 
 class MenuFragment : Fragment() {
 
@@ -28,6 +30,9 @@ class MenuFragment : Fragment() {
 
     private val viewModel: MenuViewModel by viewModels()
     private val adapter = MenuAdapter()
+
+    private var renderedCategories: Set<Category> = emptySet()
+    private var suppressChipEvents = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,8 +51,25 @@ class MenuFragment : Fragment() {
 
         binding.btnScan.setOnClickListener { startScan() }
 
+        binding.toolbar.inflateMenu(R.menu.menu_main)
+        binding.toolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.action_history -> {
+                    showCachedMenus()
+                    true
+                }
+                else -> false
+            }
+        }
+
         ensureScannerModuleInstalled()
         observeUiState()
+    }
+
+    private fun showCachedMenus() {
+        if (childFragmentManager.findFragmentByTag(CachedMenusBottomSheet.TAG) == null) {
+            CachedMenusBottomSheet().show(childFragmentManager, CachedMenusBottomSheet.TAG)
+        }
     }
 
     private fun startScan() {
@@ -95,15 +117,18 @@ class MenuFragment : Fragment() {
                 binding.recyclerMenu.visibility = View.GONE
                 binding.txtEmpty.visibility = View.VISIBLE
                 binding.txtEmpty.setText(R.string.empty_menu_hint)
+                hideFilters()
             }
             MenuUiState.Loading -> {
                 binding.progress.visibility = View.VISIBLE
                 binding.recyclerMenu.visibility = View.GONE
                 binding.txtEmpty.visibility = View.GONE
+                hideFilters()
             }
             is MenuUiState.Success -> {
                 binding.progress.visibility = View.GONE
                 adapter.submitList(state.items)
+                renderFilters(state.availableCategories, state.selectedCategory)
                 if (state.items.isEmpty()) {
                     binding.recyclerMenu.visibility = View.GONE
                     binding.txtEmpty.visibility = View.VISIBLE
@@ -118,10 +143,69 @@ class MenuFragment : Fragment() {
                 binding.recyclerMenu.visibility = View.GONE
                 binding.txtEmpty.visibility = View.VISIBLE
                 binding.txtEmpty.setText(R.string.error_load_menu)
+                hideFilters()
                 Snackbar.make(binding.root, state.message, Snackbar.LENGTH_LONG)
                     .setAction(R.string.action_retry) { viewModel.retry() }
                     .show()
             }
+        }
+    }
+
+    private fun renderFilters(available: Set<Category>, selected: Category?) {
+        if (available.isEmpty()) {
+            hideFilters()
+            return
+        }
+        binding.scrollFilters.visibility = View.VISIBLE
+        if (renderedCategories != available) {
+            buildChips(available)
+            renderedCategories = available
+        }
+        selectChip(selected)
+    }
+
+    private fun hideFilters() {
+        binding.scrollFilters.visibility = View.GONE
+        binding.chipGroupCategories.removeAllViews()
+        renderedCategories = emptySet()
+    }
+
+    private fun buildChips(available: Set<Category>) {
+        binding.chipGroupCategories.removeAllViews()
+        binding.chipGroupCategories.addView(
+            createFilterChip(getString(R.string.filter_all), category = null)
+        )
+        Category.values()
+            .filter { it in available }
+            .sortedBy { it.sortOrder }
+            .forEach { category ->
+                binding.chipGroupCategories.addView(
+                    createFilterChip(category.displayName, category)
+                )
+            }
+    }
+
+    private fun createFilterChip(label: String, category: Category?): Chip =
+        Chip(requireContext()).apply {
+            text = label
+            isCheckable = true
+            tag = category
+            setOnCheckedChangeListener { _, isChecked ->
+                if (!suppressChipEvents && isChecked) {
+                    viewModel.selectCategory(category)
+                }
+            }
+        }
+
+    private fun selectChip(target: Category?) {
+        suppressChipEvents = true
+        try {
+            for (i in 0 until binding.chipGroupCategories.childCount) {
+                val chip = binding.chipGroupCategories.getChildAt(i) as Chip
+                chip.isChecked = (chip.tag as? Category) == target
+            }
+        } finally {
+            suppressChipEvents = false
         }
     }
 

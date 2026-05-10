@@ -9,4 +9,9 @@
     <string name="error_load_menu">Could not load menu. Check your connection and try again.</string>
     <string name="error_invalid_qr">QR code is not valid</string>
     <string name="action_retry">Retry</string>
+    <string name="filter_all">All</string>
+    <string name="cached_menus_title">Last scanned menus</string>
+    <string name="cached_menus_empty">No menus cached yet. Scan a QR code to save one.</string>
+    <string name="cached_menu_subtitle">%1$d items · %2$s</string>
+    <string name="cd_history_action">Recently scanned menus</string>
 </resources>
