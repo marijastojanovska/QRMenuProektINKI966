@@ -1,5 +1,6 @@
 package mk.qrmenu.qrmenuclient.menu
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.common.moduleinstall.ModuleInstall
 import com.google.android.gms.common.moduleinstall.ModuleInstallRequest
@@ -46,7 +48,7 @@ class MenuFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.recyclerMenu.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerMenu.layoutManager = buildLayoutManager()
         binding.recyclerMenu.adapter = adapter
 
         binding.btnScan.setOnClickListener { startScan() }
@@ -64,6 +66,17 @@ class MenuFragment : Fragment() {
 
         ensureScannerModuleInstalled()
         observeUiState()
+    }
+
+    private fun buildLayoutManager() =
+        if (useGridLayout()) GridLayoutManager(requireContext(), 2)
+        else LinearLayoutManager(requireContext())
+
+    private fun useGridLayout(): Boolean {
+        val config = resources.configuration
+        val isLandscape = config.orientation == Configuration.ORIENTATION_LANDSCAPE
+        val isLargeTablet = config.smallestScreenWidthDp >= 720
+        return isLandscape || isLargeTablet
     }
 
     private fun showCachedMenus() {
