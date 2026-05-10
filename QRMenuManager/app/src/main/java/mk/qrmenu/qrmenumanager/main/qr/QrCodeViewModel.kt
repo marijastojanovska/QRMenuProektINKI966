@@ -36,10 +36,12 @@ class QrCodeViewModel : ViewModel() {
 
     private fun generate() {
         val uid = FirebaseAuth.getInstance().currentUser?.uid
+
         if (uid == null) {
             _state.value = QrUiState(isLoading = false, errorMessage = "Not signed in")
             return
         }
+
         viewModelScope.launch {
             try {
                 val bitmap = withContext(Dispatchers.Default) { encode(uid, QR_SIZE) }
@@ -60,16 +62,19 @@ class QrCodeViewModel : ViewModel() {
             EncodeHintType.MARGIN to 1,
             EncodeHintType.CHARACTER_SET to "UTF-8",
         )
+
         val matrix = QRCodeWriter().encode(content, BarcodeFormat.QR_CODE, size, size, hints)
         val width = matrix.width
         val height = matrix.height
         val pixels = IntArray(width * height)
+
         for (y in 0 until height) {
             val rowOffset = y * width
             for (x in 0 until width) {
                 pixels[rowOffset + x] = if (matrix[x, y]) Color.BLACK else Color.WHITE
             }
         }
+
         return Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888).apply {
             setPixels(pixels, 0, width, 0, 0, width, height)
         }

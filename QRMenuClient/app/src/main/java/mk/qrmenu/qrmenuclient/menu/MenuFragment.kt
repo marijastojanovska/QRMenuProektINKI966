@@ -54,6 +54,7 @@ class MenuFragment : Fragment() {
         binding.btnScan.setOnClickListener { startScan() }
 
         binding.toolbar.inflateMenu(R.menu.menu_main)
+
         binding.toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.action_history -> {
@@ -89,7 +90,9 @@ class MenuFragment : Fragment() {
         val options = GmsBarcodeScannerOptions.Builder()
             .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
             .build()
+
         val scanner = GmsBarcodeScanning.getClient(requireContext(), options)
+
         scanner.startScan()
             .addOnSuccessListener { barcode ->
                 val rawValue = barcode.rawValue
@@ -109,9 +112,11 @@ class MenuFragment : Fragment() {
 
     private fun ensureScannerModuleInstalled() {
         val scanner = GmsBarcodeScanning.getClient(requireContext())
+
         val request = ModuleInstallRequest.newBuilder()
             .addApi(scanner)
             .build()
+
         ModuleInstall.getClient(requireContext()).installModules(request)
     }
 
@@ -169,11 +174,14 @@ class MenuFragment : Fragment() {
             hideFilters()
             return
         }
+
         binding.scrollFilters.visibility = View.VISIBLE
+
         if (renderedCategories != available) {
             buildChips(available)
             renderedCategories = available
         }
+
         selectChip(selected)
     }
 
@@ -185,9 +193,11 @@ class MenuFragment : Fragment() {
 
     private fun buildChips(available: Set<Category>) {
         binding.chipGroupCategories.removeAllViews()
+
         binding.chipGroupCategories.addView(
             createFilterChip(getString(R.string.filter_all), category = null)
         )
+
         Category.values()
             .filter { it in available }
             .sortedBy { it.sortOrder }
@@ -212,6 +222,7 @@ class MenuFragment : Fragment() {
 
     private fun selectChip(target: Category?) {
         suppressChipEvents = true
+
         try {
             for (i in 0 until binding.chipGroupCategories.childCount) {
                 val chip = binding.chipGroupCategories.getChildAt(i) as Chip

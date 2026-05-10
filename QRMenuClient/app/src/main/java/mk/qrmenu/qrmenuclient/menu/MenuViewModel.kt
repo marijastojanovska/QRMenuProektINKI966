@@ -28,8 +28,7 @@ class MenuViewModel(
     private val _uiState = MutableStateFlow<MenuUiState>(MenuUiState.Idle)
     val uiState: StateFlow<MenuUiState> = _uiState.asStateFlow()
 
-    val cachedMenus: StateFlow<List<CachedMenuSummary>> =
-        cachedRepository.observeSummaries()
+    val cachedMenus: StateFlow<List<CachedMenuSummary>> = cachedRepository.observeSummaries()
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
 
     private var lastUserId: String? = null
@@ -38,14 +37,18 @@ class MenuViewModel(
 
     fun loadMenu(userId: String) {
         val trimmed = userId.trim()
+
         if (trimmed.isEmpty()) {
             _uiState.value = MenuUiState.Error("Empty QR code")
             return
         }
+
         lastUserId = trimmed
         selectedCategory = null
         allItems = emptyList()
+
         _uiState.value = MenuUiState.Loading
+
         viewModelScope.launch {
             try {
                 val items = remoteRepository.getMenu(trimmed)
@@ -60,11 +63,15 @@ class MenuViewModel(
 
     fun loadCachedMenu(userId: String) {
         val trimmed = userId.trim()
+
         if (trimmed.isEmpty()) return
+
         lastUserId = trimmed
         selectedCategory = null
         allItems = emptyList()
+
         _uiState.value = MenuUiState.Loading
+
         viewModelScope.launch {
             try {
                 allItems = cachedRepository.getMenu(trimmed)
@@ -77,7 +84,9 @@ class MenuViewModel(
 
     fun selectCategory(category: Category?) {
         if (selectedCategory == category) return
+
         selectedCategory = category
+
         if (_uiState.value is MenuUiState.Success) {
             emitSuccess()
         }
@@ -91,16 +100,19 @@ class MenuViewModel(
         val available = allItems.mapNotNullTo(sortedSetOf(compareBy { it.sortOrder })) {
             it.categoryEnum
         }
+
         val filtered = allItems.filter { product ->
             val pickedCategory = selectedCategory
             pickedCategory == null || product.categoryEnum == pickedCategory
         }
+
         val sorted = filtered.sortedWith(
             compareBy(
                 { it.categoryEnum?.sortOrder ?: Int.MAX_VALUE },
                 { it.title.lowercase() },
             ),
         )
+
         _uiState.value = MenuUiState.Success(
             items = sorted,
             availableCategories = available,

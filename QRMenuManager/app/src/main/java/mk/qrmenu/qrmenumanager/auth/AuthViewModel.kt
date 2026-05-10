@@ -25,7 +25,9 @@ class AuthViewModel : ViewModel() {
 
     fun login(email: String, password: String) {
         if (!validateCommon(email, password)) return
+
         _state.value = AuthUiState.Loading
+
         viewModelScope.launch {
             try {
                 auth.signInWithEmailAndPassword(email.trim(), password).await()
@@ -38,11 +40,14 @@ class AuthViewModel : ViewModel() {
 
     fun register(email: String, password: String, confirmPassword: String) {
         if (!validateCommon(email, password)) return
+
         if (password != confirmPassword) {
             _state.value = AuthUiState.Error("Passwords don't match")
             return
         }
+
         _state.value = AuthUiState.Loading
+
         viewModelScope.launch {
             try {
                 auth.createUserWithEmailAndPassword(email.trim(), password).await()
@@ -62,10 +67,12 @@ class AuthViewModel : ViewModel() {
             _state.value = AuthUiState.Error("Invalid email")
             return false
         }
+
         if (password.length < 6) {
             _state.value = AuthUiState.Error("Password must be at least 6 characters")
             return false
         }
+
         return true
     }
 }

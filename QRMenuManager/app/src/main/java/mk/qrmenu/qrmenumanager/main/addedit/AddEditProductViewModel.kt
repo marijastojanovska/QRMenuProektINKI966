@@ -61,7 +61,9 @@ class AddEditProductViewModel : ViewModel() {
 
     fun setEditMode(productId: String?) {
         editingId = productId
+
         _form.update { it.copy(isEdit = productId != null) }
+
         if (productId != null && !_form.value.loadedFromRemote) {
             loadForEdit(productId)
         }
@@ -69,8 +71,10 @@ class AddEditProductViewModel : ViewModel() {
 
     private fun loadForEdit(id: String) {
         val uid = auth.currentUser?.uid ?: return
+
         viewModelScope.launch {
             _form.update { it.copy(isLoading = true) }
+
             try {
                 val snapshot = firestore.collection("users")
                     .document(uid)
@@ -78,7 +82,9 @@ class AddEditProductViewModel : ViewModel() {
                     .document(id)
                     .get()
                     .await()
+
                 val product = snapshot.toObject(Product::class.java)
+
                 if (product != null) {
                     _form.update {
                         it.copy(
@@ -116,6 +122,7 @@ class AddEditProductViewModel : ViewModel() {
 
     fun onImageUrlChanged(value: String) {
         _form.update { it.copy(imageUrl = value) }
+
         if (value.isNotBlank()) {
             _errors.update { it.copy(imageErr = null) }
         }
@@ -128,6 +135,7 @@ class AddEditProductViewModel : ViewModel() {
 
     fun save() {
         val state = _form.value
+
         val uid = auth.currentUser?.uid ?: run {
             _events.tryEmit(UiEvent.ShowMessage("Not signed in"))
             return
@@ -141,11 +149,14 @@ class AddEditProductViewModel : ViewModel() {
             imageErr = if (trimmedUrl.isBlank()) R.string.error_image_required else null,
             categoryErr = if (state.category == null) R.string.error_category_required else null,
         )
+
         _errors.value = errors
+
         if (errors.hasError) return
 
         viewModelScope.launch {
             _form.update { it.copy(isLoading = true) }
+
             try {
                 val collection = firestore.collection("users")
                     .document(uid)
@@ -160,6 +171,7 @@ class AddEditProductViewModel : ViewModel() {
                     imageUrl = trimmedUrl,
                     category = state.category!!.name,
                 )
+
                 collection.document(docId).set(product).await()
 
                 _form.update { it.copy(isLoading = false) }
@@ -173,7 +185,9 @@ class AddEditProductViewModel : ViewModel() {
 
     fun delete() {
         val id = editingId ?: return
+
         val uid = auth.currentUser?.uid ?: return
+
         viewModelScope.launch {
             _form.update { it.copy(isLoading = true) }
             try {

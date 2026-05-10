@@ -30,11 +30,13 @@ class MenuViewModel : ViewModel() {
         observeProducts(),
         _selectedCategory,
     ) { list, filter ->
+
         val filtered = if (filter == null) {
             list
         } else {
             list.filter { Category.fromStorage(it.category) == filter }
         }
+
         filtered.sortedWith(
             compareBy<Product> { Category.fromStorage(it.category)?.ordinal ?: Int.MAX_VALUE }
                 .thenByDescending { it.createdAt?.time ?: 0L }
@@ -47,6 +49,7 @@ class MenuViewModel : ViewModel() {
 
     private fun observeProducts(): Flow<List<Product>> {
         val currentUid = uid ?: return flowOf(emptyList())
+
         return callbackFlow {
             val registration = firestore.collection("users")
                 .document(currentUid)
