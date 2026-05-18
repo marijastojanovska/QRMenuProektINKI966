@@ -78,6 +78,6 @@ object CartRepository {
     }
 
     fun clear() {
-        _state.value = CartState()
+        _state.value = CartState(managerId = _state.value.managerId)
     }
 }

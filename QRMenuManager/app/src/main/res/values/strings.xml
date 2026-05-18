@@ -28,6 +28,12 @@
     <string name="order_total_format">Total: $%.2f</string>
     <string name="empty_orders">No orders yet.</string>
 
+    <!-- Notifications -->
+    <string name="channel_new_orders_name">New orders</string>
+    <string name="channel_new_orders_description">Alerts when a new order is received</string>
+    <string name="notification_new_order_title">New order received</string>
+    <string name="notification_new_order_fallback">Tap to view</string>
+
     <!-- Hints -->
     <string name="hint_email">Email</string>
     <string name="hint_password">Password</string>
