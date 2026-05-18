@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_main"
     app:startDestination="@id/menuFragment">
 
@@ -8,7 +9,18 @@
         android:id="@+id/menuFragment"
         android:name="mk.qrmenu.qrmenuclient.menu.MenuFragment"
         android:label="@string/menu_title"
-        tools:layout="@layout/fragment_menu"
-        xmlns:tools="http://schemas.android.com/tools" />
+        tools:layout="@layout/fragment_menu" />
+
+    <fragment
+        android:id="@+id/cartFragment"
+        android:name="mk.qrmenu.qrmenuclient.cart.CartFragment"
+        android:label="@string/cart_title"
+        tools:layout="@layout/fragment_cart" />
+
+    <fragment
+        android:id="@+id/ordersFragment"
+        android:name="mk.qrmenu.qrmenuclient.orders.OrdersFragment"
+        android:label="@string/orders_title"
+        tools:layout="@layout/fragment_orders" />
 
 </navigation>

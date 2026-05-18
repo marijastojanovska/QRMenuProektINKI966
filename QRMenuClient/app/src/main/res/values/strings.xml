@@ -14,4 +14,31 @@
     <string name="cached_menus_empty">No menus cached yet. Scan a QR code to save one.</string>
     <string name="cached_menu_subtitle">%1$d items · %2$s</string>
     <string name="cd_history_action">Recently scanned menus</string>
+
+    <!-- Bottom nav -->
+    <string name="nav_menu">Menu</string>
+    <string name="nav_orders">Orders</string>
+
+    <!-- Cart -->
+    <string name="cart_title">Your cart</string>
+    <string name="action_add_to_cart">Add</string>
+    <string name="action_view_cart">View cart</string>
+    <string name="action_place_order">Place order</string>
+    <string name="cart_total_label">Total</string>
+    <string name="cart_summary_format">%1$d items · %2$s</string>
+    <string name="empty_cart">Your cart is empty. Add items from the menu to get started.</string>
+    <string name="cd_increment">Increase quantity</string>
+    <string name="cd_decrement">Decrease quantity</string>
+    <string name="cd_remove_from_cart">Remove from cart</string>
+    <string name="order_placed_success">Order placed. The restaurant has been notified.</string>
+
+    <!-- Orders -->
+    <string name="orders_title">Your orders</string>
+    <string name="empty_orders">No orders yet. Place one from the cart.</string>
+    <string name="status_pending">Pending</string>
+    <string name="status_accepted">Accepted</string>
+    <string name="status_rejected">Rejected</string>
+    <string name="order_items_format">%1$d× %2$s</string>
+    <string name="order_total_format">Total: %1$s</string>
+    <string name="order_pending_timestamp">Sending…</string>
 </resources>

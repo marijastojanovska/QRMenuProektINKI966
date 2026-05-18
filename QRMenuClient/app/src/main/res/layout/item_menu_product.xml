@@ -56,6 +56,61 @@
                 android:maxLines="2"
                 android:textAppearance="?attr/textAppearanceBodySmall"
                 tools:text="Tomato sauce, fresh mozzarella, basil" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_add"
+                    style="@style/Widget.Material3.Button.TonalButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/action_add_to_cart" />
+
+                <LinearLayout
+                    android:id="@+id/quantity_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_decrement"
+                        style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:contentDescription="@string/cd_decrement"
+                        app:icon="@drawable/ic_minus"
+                        app:iconGravity="textStart"
+                        app:iconPadding="0dp" />
+
+                    <TextView
+                        android:id="@+id/txt_quantity"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:textAppearance="?attr/textAppearanceTitleMedium"
+                        tools:text="2" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_increment"
+                        style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:contentDescription="@string/cd_increment"
+                        app:icon="@drawable/ic_plus"
+                        app:iconGravity="textStart"
+                        app:iconPadding="0dp" />
+
+                </LinearLayout>
+
+            </FrameLayout>
+
         </LinearLayout>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

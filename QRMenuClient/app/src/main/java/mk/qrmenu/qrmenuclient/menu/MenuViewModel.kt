@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import mk.qrmenu.qrmenuclient.cart.CartRepository
 import mk.qrmenu.qrmenuclient.data.CachedMenuRepository
 import mk.qrmenu.qrmenuclient.data.MenuRepository
 import mk.qrmenu.qrmenuclient.data.local.AppDatabase
@@ -46,6 +47,7 @@ class MenuViewModel(
         lastUserId = trimmed
         selectedCategory = null
         allItems = emptyList()
+        CartRepository.bindToManager(trimmed)
 
         _uiState.value = MenuUiState.Loading
 
@@ -69,6 +71,7 @@ class MenuViewModel(
         lastUserId = trimmed
         selectedCategory = null
         allItems = emptyList()
+        CartRepository.bindToManager(trimmed)
 
         _uiState.value = MenuUiState.Loading
 

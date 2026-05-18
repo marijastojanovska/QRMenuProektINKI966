@@ -52,4 +52,9 @@
     <color name="md_theme_dark_surfaceVariant">#53433D</color>
     <color name="md_theme_dark_onSurfaceVariant">#D8C2B9</color>
     <color name="md_theme_dark_outline">#A18C84</color>
+
+    <!-- Order status badges -->
+    <color name="status_pending">#E59A1F</color>
+    <color name="status_accepted">#1FA89A</color>
+    <color name="status_rejected">#BA1A1A</color>
 </resources>

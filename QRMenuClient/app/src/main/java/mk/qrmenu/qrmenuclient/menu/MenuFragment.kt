@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.common.moduleinstall.ModuleInstall
@@ -21,9 +22,13 @@ import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
 import kotlinx.coroutines.launch
 import mk.qrmenu.qrmenuclient.R
+import mk.qrmenu.qrmenuclient.cart.CartRepository
+import mk.qrmenu.qrmenuclient.cart.CartState
 import mk.qrmenu.qrmenuclient.databinding.FragmentMenuBinding
 import mk.qrmenu.qrmenuclient.menu.history.CachedMenusBottomSheet
 import mk.qrmenu.qrmenuclient.model.Category
+import java.text.NumberFormat
+import java.util.Locale
 
 class MenuFragment : Fragment() {
 
@@ -31,7 +36,14 @@ class MenuFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: MenuViewModel by viewModels()
-    private val adapter = MenuAdapter()
+    private val adapter = MenuAdapter(
+        onAdd = { product -> CartRepository.add(product) },
+        onIncrement = { product -> CartRepository.add(product) },
+        onDecrement = { product -> CartRepository.decrement(product.id) },
+    )
+
+    private val priceFormatter: NumberFormat =
+        NumberFormat.getCurrencyInstance(Locale.US)
 
     private var renderedCategories: Set<Category> = emptySet()
     private var suppressChipEvents = false
@@ -53,6 +65,10 @@ class MenuFragment : Fragment() {
 
         binding.btnScan.setOnClickListener { startScan() }
 
+        binding.cardCart.setOnClickListener {
+            findNavController().navigate(R.id.cartFragment)
+        }
+
         binding.toolbar.inflateMenu(R.menu.menu_main)
 
         binding.toolbar.setOnMenuItemClickListener { item ->
@@ -67,6 +83,7 @@ class MenuFragment : Fragment() {
 
         ensureScannerModuleInstalled()
         observeUiState()
+        observeCart()
     }
 
     private fun buildLayoutManager() =
@@ -125,6 +142,30 @@ class MenuFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect(::render)
             }
+        }
+    }
+
+    private fun observeCart() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                CartRepository.state.collect(::renderCart)
+            }
+        }
+    }
+
+    private fun renderCart(state: CartState) {
+        val quantities = state.entries.associate { it.productId to it.quantity }
+        adapter.setCartQuantities(quantities)
+
+        if (state.isEmpty) {
+            binding.cardCart.visibility = View.GONE
+        } else {
+            binding.cardCart.visibility = View.VISIBLE
+            binding.txtCartSummary.text = getString(
+                R.string.cart_summary_format,
+                state.totalQuantity,
+                priceFormatter.format(state.totalPrice),
+            )
         }
     }
 
