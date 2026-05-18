@@ -21,6 +21,12 @@
     </fragment>
 
     <fragment
+        android:id="@+id/ordersFragment"
+        android:name="mk.qrmenu.qrmenumanager.main.orders.OrdersFragment"
+        android:label="@string/title_orders"
+        tools:layout="@layout/fragment_orders" />
+
+    <fragment
         android:id="@+id/qrCodeFragment"
         android:name="mk.qrmenu.qrmenumanager.main.qr.QrCodeFragment"
         android:label="@string/title_qr_code"

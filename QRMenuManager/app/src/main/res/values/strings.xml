@@ -8,6 +8,25 @@
     <string name="title_add_product">Add Product</string>
     <string name="title_edit_product">Edit Product</string>
     <string name="title_qr_code">Menu QR Code</string>
+    <string name="title_orders">Orders</string>
+
+    <!-- Bottom navigation -->
+    <string name="nav_menu">Menu</string>
+    <string name="nav_orders">Orders</string>
+
+    <!-- Order filters -->
+    <string name="filter_all_orders">All</string>
+    <string name="status_pending">Pending</string>
+    <string name="status_accepted">Accepted</string>
+    <string name="status_rejected">Rejected</string>
+
+    <!-- Order actions -->
+    <string name="action_accept">Accept</string>
+    <string name="action_reject">Reject</string>
+
+    <!-- Order formats -->
+    <string name="order_total_format">Total: $%.2f</string>
+    <string name="empty_orders">No orders yet.</string>
 
     <!-- Hints -->
     <string name="hint_email">Email</string>

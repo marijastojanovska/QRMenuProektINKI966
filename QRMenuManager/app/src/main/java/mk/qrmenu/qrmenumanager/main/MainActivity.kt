@@ -8,10 +8,12 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import com.google.firebase.auth.FirebaseAuth
 import mk.qrmenu.qrmenumanager.R
 import mk.qrmenu.qrmenumanager.auth.AuthActivity
@@ -35,12 +37,21 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
+        ViewCompat.setOnApplyWindowInsetsListener(binding.bottomNav) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.updatePadding(bottom = systemBars.bottom)
+            insets
+        }
+
         setSupportActionBar(binding.toolbar)
 
         val navHost = supportFragmentManager.findFragmentById(R.id.main_nav_host) as NavHostFragment
         navController = navHost.navController
-        appBarConfiguration = AppBarConfiguration(navController.graph)
+        appBarConfiguration = AppBarConfiguration(
+            setOf(R.id.menuFragment, R.id.ordersFragment)
+        )
         setupActionBarWithNavController(navController, appBarConfiguration)
+        binding.bottomNav.setupWithNavController(navController)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
