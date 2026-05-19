@@ -1,15 +1,17 @@
 package mk.qrmenu.qrmenuclient.model
 
+import androidx.annotation.StringRes
 import com.google.firebase.firestore.DocumentId
+import mk.qrmenu.qrmenuclient.R
 
 enum class Category(
     val firestoreValue: String,
-    val displayName: String,
+    @StringRes val displayNameRes: Int,
     val sortOrder: Int,
 ) {
-    COFFEE("coffee", "Coffee", 0),
-    DRINKS("drinks", "Drinks", 1),
-    FOOD("food", "Food", 2);
+    COFFEE("coffee", R.string.category_coffee, 0),
+    DRINKS("drinks", R.string.category_drinks, 1),
+    FOOD("food", R.string.category_food, 2);
 
     companion object {
         fun fromFirestore(value: String?): Category? {

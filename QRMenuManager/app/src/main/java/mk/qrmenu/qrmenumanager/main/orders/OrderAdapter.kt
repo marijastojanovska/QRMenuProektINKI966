@@ -12,7 +12,6 @@ import mk.qrmenu.qrmenumanager.model.Order
 import mk.qrmenu.qrmenumanager.model.OrderItem
 import mk.qrmenu.qrmenumanager.model.OrderStatus
 import java.text.DateFormat
-import java.util.Locale
 
 class OrderAdapter(
     private val onAccept: (Order) -> Unit,
@@ -66,13 +65,9 @@ class OrderAdapter(
 
         private fun formatItems(items: List<OrderItem>): String {
             if (items.isEmpty()) return ""
+            val context = binding.root.context
             return items.joinToString(separator = " · ") {
-                String.format(
-                    Locale.getDefault(),
-                    "%d× %s",
-                    it.quantity,
-                    it.title,
-                )
+                context.getString(R.string.order_item_format, it.quantity, it.title)
             }
         }
     }

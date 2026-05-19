@@ -1,6 +1,7 @@
 package mk.qrmenu.qrmenumanager.main.addedit
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -43,7 +44,7 @@ sealed interface UiEvent {
     data class ShowMessage(val message: String) : UiEvent
 }
 
-class AddEditProductViewModel : ViewModel() {
+class AddEditProductViewModel(application: Application) : AndroidViewModel(application) {
 
     private val firestore = FirebaseFirestore.getInstance()
     private val auth = FirebaseAuth.getInstance()
@@ -99,11 +100,13 @@ class AddEditProductViewModel : ViewModel() {
                     }
                 } else {
                     _form.update { it.copy(isLoading = false) }
-                    _events.tryEmit(UiEvent.ShowMessage("Product not found"))
+                    _events.tryEmit(UiEvent.ShowMessage(string(R.string.error_product_not_found)))
                 }
             } catch (t: Throwable) {
                 _form.update { it.copy(isLoading = false) }
-                _events.tryEmit(UiEvent.ShowMessage(t.localizedMessage ?: "Failed to load"))
+                _events.tryEmit(
+                    UiEvent.ShowMessage(t.localizedMessage ?: string(R.string.error_load_failed))
+                )
             }
         }
     }
@@ -137,7 +140,7 @@ class AddEditProductViewModel : ViewModel() {
         val state = _form.value
 
         val uid = auth.currentUser?.uid ?: run {
-            _events.tryEmit(UiEvent.ShowMessage("Not signed in"))
+            _events.tryEmit(UiEvent.ShowMessage(string(R.string.error_not_signed_in)))
             return
         }
 
@@ -178,7 +181,9 @@ class AddEditProductViewModel : ViewModel() {
                 _events.tryEmit(UiEvent.NavigateBack)
             } catch (t: Throwable) {
                 _form.update { it.copy(isLoading = false) }
-                _events.tryEmit(UiEvent.ShowMessage(t.localizedMessage ?: "Save failed"))
+                _events.tryEmit(
+                    UiEvent.ShowMessage(t.localizedMessage ?: string(R.string.error_save_failed))
+                )
             }
         }
     }
@@ -201,8 +206,12 @@ class AddEditProductViewModel : ViewModel() {
                 _events.tryEmit(UiEvent.NavigateBack)
             } catch (t: Throwable) {
                 _form.update { it.copy(isLoading = false) }
-                _events.tryEmit(UiEvent.ShowMessage(t.localizedMessage ?: "Delete failed"))
+                _events.tryEmit(
+                    UiEvent.ShowMessage(t.localizedMessage ?: string(R.string.error_delete_failed))
+                )
             }
         }
     }
+
+    private fun string(resId: Int): String = getApplication<Application>().getString(resId)
 }

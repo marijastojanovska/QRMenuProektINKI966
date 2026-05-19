@@ -9,7 +9,6 @@ import com.bumptech.glide.Glide
 import mk.qrmenu.qrmenumanager.R
 import mk.qrmenu.qrmenumanager.databinding.ItemProductBinding
 import mk.qrmenu.qrmenumanager.model.Product
-import java.util.Locale
 
 class ProductAdapter(
     private val onClick: (Product) -> Unit,
@@ -32,8 +31,9 @@ class ProductAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(product: Product) {
+            val context = binding.root.context
             binding.txtTitle.text = product.title
-            binding.txtPrice.text = String.format(Locale.getDefault(), "$%.2f", product.price)
+            binding.txtPrice.text = context.getString(R.string.price_format, product.price)
             binding.txtDescription.text = product.description
 
             Glide.with(binding.imgProduct)

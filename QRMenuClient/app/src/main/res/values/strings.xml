@@ -49,4 +49,14 @@
     <string name="notification_order_accepted_body">The restaurant accepted your order.</string>
     <string name="notification_order_rejected_title">Order declined</string>
     <string name="notification_order_rejected_body">Sorry, the restaurant declined your order.</string>
+
+    <!-- Categories -->
+    <string name="category_coffee">Coffee</string>
+    <string name="category_drinks">Drinks</string>
+    <string name="category_food">Food</string>
+
+    <!-- Language -->
+    <string name="action_language">Language</string>
+    <string name="language_english">English</string>
+    <string name="language_macedonian">Македонски</string>
 </resources>

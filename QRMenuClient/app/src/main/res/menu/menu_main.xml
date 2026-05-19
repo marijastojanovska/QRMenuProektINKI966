@@ -8,4 +8,20 @@
         android:title="@string/cd_history_action"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/action_language"
+        android:title="@string/action_language"
+        app:showAsAction="never">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/action_language_en"
+                    android:title="@string/language_english" />
+                <item
+                    android:id="@+id/action_language_mk"
+                    android:title="@string/language_macedonian" />
+            </group>
+        </menu>
+    </item>
+
 </menu>

@@ -25,7 +25,9 @@
     <string name="action_reject">Reject</string>
 
     <!-- Order formats -->
-    <string name="order_total_format">Total: $%.2f</string>
+    <string name="price_format">$%1$.2f</string>
+    <string name="order_total_format">Total: $%1$.2f</string>
+    <string name="order_item_format">%1$d× %2$s</string>
     <string name="empty_orders">No orders yet.</string>
 
     <!-- Notifications -->
@@ -58,6 +60,11 @@
     <string name="action_logout">Logout</string>
     <string name="action_generate_qr">Generate QR Code</string>
     <string name="action_share_id">Share menu ID</string>
+    <string name="action_language">Language</string>
+
+    <!-- Languages -->
+    <string name="language_english">English</string>
+    <string name="language_macedonian">Македонски</string>
 
     <!-- Prompts -->
     <string name="prompt_no_account">Don\'t have an account? Register</string>
@@ -72,6 +79,14 @@
     <string name="error_image_required">Image URL is required</string>
     <string name="error_category_required">Choose a category</string>
     <string name="error_unknown">Something went wrong</string>
+    <string name="error_login_failed">Login failed</string>
+    <string name="error_register_failed">Registration failed</string>
+    <string name="error_product_not_found">Product not found</string>
+    <string name="error_load_failed">Failed to load</string>
+    <string name="error_save_failed">Save failed</string>
+    <string name="error_delete_failed">Delete failed</string>
+    <string name="error_not_signed_in">Not signed in</string>
+    <string name="error_qr_generate_failed">Failed to generate QR code</string>
 
     <!-- Confirmations -->
     <string name="confirm_delete_title">Delete product?</string>

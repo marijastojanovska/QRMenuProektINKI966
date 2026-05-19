@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Scan2EatManager</string>
+
+    <!-- Titles -->
+    <string name="title_login">Најава</string>
+    <string name="title_register">Регистрација</string>
+    <string name="title_menu">Менаџер на мени</string>
+    <string name="title_add_product">Додај производ</string>
+    <string name="title_edit_product">Уреди производ</string>
+    <string name="title_qr_code">QR-код на менито</string>
+    <string name="title_orders">Нарачки</string>
+
+    <!-- Bottom navigation -->
+    <string name="nav_menu">Мени</string>
+    <string name="nav_orders">Нарачки</string>
+
+    <!-- Order filters -->
+    <string name="filter_all_orders">Сите</string>
+    <string name="status_pending">Во чекање</string>
+    <string name="status_accepted">Прифатени</string>
+    <string name="status_rejected">Одбиени</string>
+
+    <!-- Order actions -->
+    <string name="action_accept">Прифати</string>
+    <string name="action_reject">Одбиј</string>
+
+    <!-- Order formats -->
+    <string name="price_format">%1$.2f ден.</string>
+    <string name="order_total_format">Вкупно: %1$.2f ден.</string>
+    <string name="order_item_format">%1$d× %2$s</string>
+    <string name="empty_orders">Сè уште нема нарачки.</string>
+
+    <!-- Notifications -->
+    <string name="channel_new_orders_name">Нови нарачки</string>
+    <string name="channel_new_orders_description">Известувања кога ќе пристигне нова нарачка</string>
+    <string name="notification_new_order_title">Пристигна нова нарачка</string>
+    <string name="notification_new_order_fallback">Допрете за преглед</string>
+
+    <!-- Hints -->
+    <string name="hint_email">Е-пошта</string>
+    <string name="hint_password">Лозинка</string>
+    <string name="hint_confirm_password">Потврди ја лозинката</string>
+    <string name="hint_title">Наслов</string>
+    <string name="hint_description">Опис</string>
+    <string name="hint_price">Цена</string>
+    <string name="hint_image_url">URL на сликата</string>
+    <string name="hint_category">Категорија</string>
+
+    <!-- Categories -->
+    <string name="category_all">Сите</string>
+    <string name="category_coffee">Кафе</string>
+    <string name="category_drinks">Пијалаци</string>
+    <string name="category_food">Храна</string>
+
+    <!-- Actions -->
+    <string name="action_login">Најави се</string>
+    <string name="action_register">Регистрирај се</string>
+    <string name="action_save">Зачувај</string>
+    <string name="action_delete">Избриши</string>
+    <string name="action_logout">Одјави се</string>
+    <string name="action_generate_qr">Генерирај QR-код</string>
+    <string name="action_share_id">Сподели ID на менито</string>
+    <string name="action_language">Јазик</string>
+
+    <!-- Languages -->
+    <string name="language_english">English</string>
+    <string name="language_macedonian">Македонски</string>
+
+    <!-- Prompts -->
+    <string name="prompt_no_account">Немате сметка? Регистрирајте се</string>
+    <string name="prompt_have_account">Веќе имате сметка? Најавете се</string>
+
+    <!-- Errors -->
+    <string name="error_email_invalid">Невалидна е-пошта</string>
+    <string name="error_password_short">Лозинката мора да има најмалку 6 знаци</string>
+    <string name="error_passwords_dont_match">Лозинките не се совпаѓаат</string>
+    <string name="error_title_required">Насловот е задолжителен</string>
+    <string name="error_price_invalid">Внесете цена поголема од 0</string>
+    <string name="error_image_required">URL на сликата е задолжителен</string>
+    <string name="error_category_required">Изберете категорија</string>
+    <string name="error_unknown">Нешто тргна наопаку</string>
+    <string name="error_login_failed">Неуспешна најава</string>
+    <string name="error_register_failed">Неуспешна регистрација</string>
+    <string name="error_product_not_found">Производот не е пронајден</string>
+    <string name="error_load_failed">Неуспешно вчитување</string>
+    <string name="error_save_failed">Неуспешно зачувување</string>
+    <string name="error_delete_failed">Неуспешно бришење</string>
+    <string name="error_not_signed_in">Не сте најавени</string>
+    <string name="error_qr_generate_failed">Неуспешно генерирање на QR-код</string>
+
+    <!-- Confirmations -->
+    <string name="confirm_delete_title">Да се избрише производот?</string>
+    <string name="confirm_delete_message">Ова трајно ќе го отстрани производот.</string>
+
+    <!-- Misc -->
+    <string name="empty_menu">Сè уште нема производи. Допрете + за да додадете.</string>
+    <string name="loading">Се вчитува…</string>
+    <string name="cd_product_image">Слика на производот</string>
+    <string name="cd_qr_code">QR-код со ID на вашето мени</string>
+    <string name="qr_subtitle">Отпечатете го овој QR-код. Апликацијата на клиентот го скенира за да го прикаже вашето мени.</string>
+</resources>

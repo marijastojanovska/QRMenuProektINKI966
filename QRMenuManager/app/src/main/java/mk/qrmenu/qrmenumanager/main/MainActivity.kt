@@ -1,6 +1,7 @@
 package mk.qrmenu.qrmenumanager.main
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
@@ -9,6 +10,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
@@ -24,6 +26,7 @@ import mk.qrmenu.qrmenumanager.R
 import mk.qrmenu.qrmenumanager.auth.AuthActivity
 import mk.qrmenu.qrmenumanager.databinding.ActivityMainBinding
 import mk.qrmenu.qrmenumanager.notifications.OrdersNotifier
+import mk.qrmenu.qrmenumanager.util.LocaleHelper
 
 class MainActivity : AppCompatActivity() {
 
@@ -33,7 +36,11 @@ class MainActivity : AppCompatActivity() {
 
     private val requestNotificationPermission = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
-    ) { /* result ignored — notifications are silently skipped if denied */ }
+    ) { }
+
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(LocaleHelper.applySavedLocale(newBase))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,18 +82,22 @@ class MainActivity : AppCompatActivity() {
 
     private fun handleNotificationIntent(intent: Intent?) {
         if (intent?.getBooleanExtra(OrdersNotifier.EXTRA_OPEN_ORDERS, false) == true) {
+
             if (navController.currentDestination?.id != R.id.ordersFragment) {
                 navController.navigate(R.id.ordersFragment)
             }
+
             intent.removeExtra(OrdersNotifier.EXTRA_OPEN_ORDERS)
         }
     }
 
     private fun maybeRequestNotificationPermission() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) return
+
         val granted = ContextCompat.checkSelfPermission(
             this, Manifest.permission.POST_NOTIFICATIONS
         ) == PackageManager.PERMISSION_GRANTED
+
         if (!granted) {
             requestNotificationPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
         }
@@ -105,6 +116,10 @@ class MainActivity : AppCompatActivity() {
                 }
                 true
             }
+            R.id.action_language -> {
+                showLanguageDialog()
+                true
+            }
             R.id.action_logout -> {
                 FirebaseAuth.getInstance().signOut()
                 startActivity(
@@ -117,6 +132,28 @@ class MainActivity : AppCompatActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun showLanguageDialog() {
+        val labels = arrayOf(
+            getString(R.string.language_english),
+            getString(R.string.language_macedonian),
+        )
+        val codes = arrayOf(LocaleHelper.LANG_ENGLISH, LocaleHelper.LANG_MACEDONIAN)
+        val currentIndex = codes.indexOf(LocaleHelper.getSavedLanguage(this)).coerceAtLeast(0)
+
+        AlertDialog.Builder(this)
+            .setTitle(R.string.action_language)
+            .setSingleChoiceItems(labels, currentIndex) { dialog, which ->
+                dialog.dismiss()
+                val selected = codes[which]
+                if (selected != LocaleHelper.getSavedLanguage(this)) {
+                    LocaleHelper.setLanguage(this, selected)
+                    recreate()
+                }
+            }
+            .setNegativeButton(android.R.string.cancel, null)
+            .show()
     }
 
     override fun onSupportNavigateUp(): Boolean {

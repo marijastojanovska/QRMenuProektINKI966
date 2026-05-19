@@ -1,8 +1,9 @@
 package mk.qrmenu.qrmenumanager.main.qr
 
+import android.app.Application
 import android.graphics.Bitmap
 import android.graphics.Color
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.zxing.BarcodeFormat
@@ -15,6 +16,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import mk.qrmenu.qrmenumanager.R
 
 private const val QR_SIZE = 720
 
@@ -25,7 +27,7 @@ data class QrUiState(
     val errorMessage: String? = null,
 )
 
-class QrCodeViewModel : ViewModel() {
+class QrCodeViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _state = MutableStateFlow(QrUiState())
     val state: StateFlow<QrUiState> = _state.asStateFlow()
@@ -38,7 +40,10 @@ class QrCodeViewModel : ViewModel() {
         val uid = FirebaseAuth.getInstance().currentUser?.uid
 
         if (uid == null) {
-            _state.value = QrUiState(isLoading = false, errorMessage = "Not signed in")
+            _state.value = QrUiState(
+                isLoading = false,
+                errorMessage = string(R.string.error_not_signed_in),
+            )
             return
         }
 
@@ -50,7 +55,7 @@ class QrCodeViewModel : ViewModel() {
                 _state.value = QrUiState(
                     isLoading = false,
                     content = uid,
-                    errorMessage = t.localizedMessage ?: "Failed to generate QR code",
+                    errorMessage = t.localizedMessage ?: string(R.string.error_qr_generate_failed),
                 )
             }
         }
@@ -79,4 +84,6 @@ class QrCodeViewModel : ViewModel() {
             setPixels(pixels, 0, width, 0, 0, width, height)
         }
     }
+
+    private fun string(resId: Int): String = getApplication<Application>().getString(resId)
 }

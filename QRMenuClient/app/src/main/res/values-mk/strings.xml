@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Scan2Eat</string>
+    <string name="menu_title">Scan2Eat</string>
+    <string name="scan_qr_code">Скенирај QR-код</string>
+    <string name="cd_product_image">Слика на производот</string>
+    <string name="cd_scan_icon">Икона за скенирање</string>
+    <string name="empty_menu_hint">Скенирајте QR-код за да го вчитате менито</string>
+    <string name="empty_menu_after_scan">Не се пронајдени производи во ова мени</string>
+    <string name="error_load_menu">Менито не може да се вчита. Проверете ја врската и обидете се повторно.</string>
+    <string name="error_invalid_qr">QR-кодот не е валиден</string>
+    <string name="action_retry">Обиди се повторно</string>
+    <string name="filter_all">Сите</string>
+    <string name="cached_menus_title">Последно скенирани менија</string>
+    <string name="cached_menus_empty">Сè уште нема зачувани менија. Скенирајте QR-код за да зачувате едно.</string>
+    <string name="cached_menu_subtitle">%1$d производи · %2$s</string>
+    <string name="cd_history_action">Неодамна скенирани менија</string>
+
+    <!-- Bottom nav -->
+    <string name="nav_menu">Мени</string>
+    <string name="nav_orders">Нарачки</string>
+
+    <!-- Cart -->
+    <string name="cart_title">Вашата кошничка</string>
+    <string name="action_add_to_cart">Додај</string>
+    <string name="action_view_cart">Прегледај ја кошничката</string>
+    <string name="action_place_order">Нарачај</string>
+    <string name="cart_total_label">Вкупно</string>
+    <string name="cart_summary_format">%1$d производи · %2$s</string>
+    <string name="empty_cart">Кошничката е празна. Додајте производи од менито за да започнете.</string>
+    <string name="cd_increment">Зголеми количина</string>
+    <string name="cd_decrement">Намали количина</string>
+    <string name="cd_remove_from_cart">Отстрани од кошничката</string>
+    <string name="order_placed_success">Нарачката е испратена. Ресторанот е известен.</string>
+
+    <!-- Orders -->
+    <string name="orders_title">Вашите нарачки</string>
+    <string name="empty_orders">Сè уште немате нарачки. Направете една од кошничката.</string>
+    <string name="status_pending">Во чекање</string>
+    <string name="status_accepted">Прифатена</string>
+    <string name="status_rejected">Одбиена</string>
+    <string name="order_items_format">%1$d× %2$s</string>
+    <string name="order_total_format">Вкупно: %1$s</string>
+    <string name="order_pending_timestamp">Се испраќа…</string>
+
+    <!-- Notifications -->
+    <string name="notification_channel_order_updates">Известувања за нарачки</string>
+    <string name="notification_channel_order_updates_description">Известувања кога ресторанот ќе ја прифати или одбие вашата нарачка.</string>
+    <string name="notification_order_accepted_title">Нарачката е прифатена</string>
+    <string name="notification_order_accepted_body">Ресторанот ја прифати вашата нарачка.</string>
+    <string name="notification_order_rejected_title">Нарачката е одбиена</string>
+    <string name="notification_order_rejected_body">Жалиме, ресторанот ја одби вашата нарачка.</string>
+
+    <!-- Categories -->
+    <string name="category_coffee">Кафе</string>
+    <string name="category_drinks">Пијалаци</string>
+    <string name="category_food">Храна</string>
+
+    <!-- Language -->
+    <string name="action_language">Јазик</string>
+    <string name="language_english">English</string>
+    <string name="language_macedonian">Македонски</string>
+</resources>

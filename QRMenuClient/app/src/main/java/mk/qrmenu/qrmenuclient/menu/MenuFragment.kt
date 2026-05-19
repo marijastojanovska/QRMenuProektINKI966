@@ -27,6 +27,7 @@ import mk.qrmenu.qrmenuclient.cart.CartState
 import mk.qrmenu.qrmenuclient.databinding.FragmentMenuBinding
 import mk.qrmenu.qrmenuclient.menu.history.CachedMenusBottomSheet
 import mk.qrmenu.qrmenuclient.model.Category
+import mk.qrmenu.qrmenuclient.util.LocaleHelper
 import java.text.NumberFormat
 import java.util.Locale
 
@@ -70,11 +71,20 @@ class MenuFragment : Fragment() {
         }
 
         binding.toolbar.inflateMenu(R.menu.menu_main)
+        markCurrentLanguage()
 
         binding.toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.action_history -> {
                     showCachedMenus()
+                    true
+                }
+                R.id.action_language_en -> {
+                    selectLanguage(LocaleHelper.LANG_ENGLISH)
+                    true
+                }
+                R.id.action_language_mk -> {
+                    selectLanguage(LocaleHelper.LANG_MACEDONIAN)
                     true
                 }
                 else -> false
@@ -95,6 +105,22 @@ class MenuFragment : Fragment() {
         val isLandscape = config.orientation == Configuration.ORIENTATION_LANDSCAPE
         val isLargeTablet = config.smallestScreenWidthDp >= 720
         return isLandscape || isLargeTablet
+    }
+
+    private fun markCurrentLanguage() {
+        val current = LocaleHelper.getSavedLanguage(requireContext())
+        val targetId = when (current) {
+            LocaleHelper.LANG_MACEDONIAN -> R.id.action_language_mk
+            else -> R.id.action_language_en
+        }
+        binding.toolbar.menu.findItem(targetId)?.isChecked = true
+    }
+
+    private fun selectLanguage(language: String) {
+        val context = requireContext()
+        if (LocaleHelper.getSavedLanguage(context) == language) return
+        LocaleHelper.setLanguage(context, language)
+        requireActivity().recreate()
     }
 
     private fun showCachedMenus() {
@@ -244,7 +270,7 @@ class MenuFragment : Fragment() {
             .sortedBy { it.sortOrder }
             .forEach { category ->
                 binding.chipGroupCategories.addView(
-                    createFilterChip(category.displayName, category)
+                    createFilterChip(getString(category.displayNameRes), category)
                 )
             }
     }

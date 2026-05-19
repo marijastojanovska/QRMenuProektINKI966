@@ -1,6 +1,7 @@
 package mk.qrmenu.qrmenumanager.auth
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -8,6 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import mk.qrmenu.qrmenumanager.R
 
 sealed interface AuthUiState {
     object Idle : AuthUiState
@@ -16,7 +18,7 @@ sealed interface AuthUiState {
     data class Error(val message: String) : AuthUiState
 }
 
-class AuthViewModel : ViewModel() {
+class AuthViewModel(application: Application) : AndroidViewModel(application) {
 
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
@@ -33,7 +35,9 @@ class AuthViewModel : ViewModel() {
                 auth.signInWithEmailAndPassword(email.trim(), password).await()
                 _state.value = AuthUiState.Success
             } catch (t: Throwable) {
-                _state.value = AuthUiState.Error(t.localizedMessage ?: "Login failed")
+                _state.value = AuthUiState.Error(
+                    t.localizedMessage ?: string(R.string.error_login_failed)
+                )
             }
         }
     }
@@ -42,7 +46,7 @@ class AuthViewModel : ViewModel() {
         if (!validateCommon(email, password)) return
 
         if (password != confirmPassword) {
-            _state.value = AuthUiState.Error("Passwords don't match")
+            _state.value = AuthUiState.Error(string(R.string.error_passwords_dont_match))
             return
         }
 
@@ -53,7 +57,9 @@ class AuthViewModel : ViewModel() {
                 auth.createUserWithEmailAndPassword(email.trim(), password).await()
                 _state.value = AuthUiState.Success
             } catch (t: Throwable) {
-                _state.value = AuthUiState.Error(t.localizedMessage ?: "Registration failed")
+                _state.value = AuthUiState.Error(
+                    t.localizedMessage ?: string(R.string.error_register_failed)
+                )
             }
         }
     }
@@ -64,15 +70,17 @@ class AuthViewModel : ViewModel() {
 
     private fun validateCommon(email: String, password: String): Boolean {
         if (email.isBlank() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email.trim()).matches()) {
-            _state.value = AuthUiState.Error("Invalid email")
+            _state.value = AuthUiState.Error(string(R.string.error_email_invalid))
             return false
         }
 
         if (password.length < 6) {
-            _state.value = AuthUiState.Error("Password must be at least 6 characters")
+            _state.value = AuthUiState.Error(string(R.string.error_password_short))
             return false
         }
 
         return true
     }
+
+    private fun string(resId: Int): String = getApplication<Application>().getString(resId)
 }

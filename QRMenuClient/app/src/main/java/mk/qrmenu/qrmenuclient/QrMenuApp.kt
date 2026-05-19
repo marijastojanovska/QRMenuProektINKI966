@@ -3,11 +3,17 @@ package mk.qrmenu.qrmenuclient
 import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.content.Context
 import android.os.Build
 import androidx.core.content.getSystemService
 import mk.qrmenu.qrmenuclient.notifications.OrderNotificationManager
+import mk.qrmenu.qrmenuclient.util.LocaleHelper
 
 class QrMenuApp : Application() {
+
+    override fun attachBaseContext(base: Context) {
+        super.attachBaseContext(LocaleHelper.applySavedLocale(base))
+    }
 
     override fun onCreate() {
         super.onCreate()
