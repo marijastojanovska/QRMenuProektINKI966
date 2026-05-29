@@ -10,5 +10,9 @@ data class Order(
     var managerId: String = "",
     var status: String = OrderStatus.PENDING.name,
     var items: List<OrderItem> = emptyList(),
+    var customerAddress: String = "",
+    var customerCity: String = "",
+    var customerPhone: String = "",
+    var paymentMethod: String = PaymentMethod.CASH.name,
     @ServerTimestamp var createdAt: Date? = null,
 )

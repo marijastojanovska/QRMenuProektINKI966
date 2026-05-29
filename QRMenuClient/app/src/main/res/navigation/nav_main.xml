@@ -18,6 +18,12 @@
         tools:layout="@layout/fragment_cart" />
 
     <fragment
+        android:id="@+id/checkoutFragment"
+        android:name="mk.qrmenu.qrmenuclient.checkout.CheckoutFragment"
+        android:label="@string/checkout_title"
+        tools:layout="@layout/fragment_checkout" />
+
+    <fragment
         android:id="@+id/ordersFragment"
         android:name="mk.qrmenu.qrmenuclient.orders.OrdersFragment"
         android:label="@string/orders_title"

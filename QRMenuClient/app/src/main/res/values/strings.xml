@@ -32,6 +32,23 @@
     <string name="cd_remove_from_cart">Remove from cart</string>
     <string name="order_placed_success">Order placed. The restaurant has been notified.</string>
 
+    <!-- Checkout -->
+    <string name="checkout_title">Checkout</string>
+    <string name="hint_address">Address</string>
+    <string name="hint_city">City</string>
+    <string name="hint_phone">Mobile phone</string>
+    <string name="payment_method_label">Payment method</string>
+    <string name="payment_cash">Cash</string>
+    <string name="payment_card">Card</string>
+    <string name="hint_card_number">Card number</string>
+    <string name="hint_card_expiry">MM/YY</string>
+    <string name="hint_card_cvv">CVV</string>
+    <string name="hint_card_holder">Cardholder name</string>
+    <string name="processing_payment">Processing payment…</string>
+    <string name="action_submit_order">Submit order</string>
+    <string name="error_required_field">Required</string>
+    <string name="error_invalid_card">Invalid card details</string>
+
     <!-- Orders -->
     <string name="orders_title">Your orders</string>
     <string name="empty_orders">No orders yet. Place one from the cart.</string>

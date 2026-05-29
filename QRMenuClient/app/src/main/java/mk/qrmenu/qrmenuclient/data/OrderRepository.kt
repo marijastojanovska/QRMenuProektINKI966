@@ -9,6 +9,7 @@ import kotlinx.coroutines.tasks.await
 import mk.qrmenu.qrmenuclient.model.Order
 import mk.qrmenu.qrmenuclient.model.OrderItem
 import mk.qrmenu.qrmenuclient.model.OrderStatus
+import mk.qrmenu.qrmenuclient.model.PaymentMethod
 
 class OrderRepository(
     private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance(),
@@ -18,6 +19,10 @@ class OrderRepository(
         clientId: String,
         managerId: String,
         items: List<OrderItem>,
+        customerAddress: String,
+        customerCity: String,
+        customerPhone: String,
+        paymentMethod: PaymentMethod,
     ): String {
         val managerCol = managerOrdersRef(managerId)
         val clientCol = clientOrdersRef(clientId)
@@ -31,6 +36,10 @@ class OrderRepository(
             managerId = managerId,
             status = OrderStatus.PENDING.name,
             items = items,
+            customerAddress = customerAddress,
+            customerCity = customerCity,
+            customerPhone = customerPhone,
+            paymentMethod = paymentMethod.name,
         )
 
         firestore.batch().apply {

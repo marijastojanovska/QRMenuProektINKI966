@@ -30,6 +30,17 @@
     <string name="order_item_format">%1$d× %2$s</string>
     <string name="empty_orders">No orders yet.</string>
 
+    <!-- Order delivery details -->
+    <string name="label_field_format">%1$s: %2$s</string>
+    <string name="label_delivery_details">Delivery details</string>
+    <string name="label_address">Address</string>
+    <string name="label_city">City</string>
+    <string name="label_phone">Phone</string>
+    <string name="label_payment_method">Payment</string>
+    <string name="payment_method_cash">Cash on delivery</string>
+    <string name="payment_method_card">Card</string>
+    <string name="value_not_provided">Not provided</string>
+
     <!-- Notifications -->
     <string name="channel_new_orders_name">New orders</string>
     <string name="channel_new_orders_description">Alerts when a new order is received</string>

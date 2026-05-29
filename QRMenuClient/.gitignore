@@ -2,6 +2,7 @@
 .gradle
 .claude
 CLAUDE.md
+QRClient.md
 /local.properties
 /.idea/caches
 /.idea/libraries

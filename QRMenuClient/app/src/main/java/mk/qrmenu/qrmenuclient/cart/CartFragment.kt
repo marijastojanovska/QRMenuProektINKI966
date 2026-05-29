@@ -11,7 +11,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 import mk.qrmenu.qrmenuclient.R
 import mk.qrmenu.qrmenuclient.databinding.FragmentCartBinding
@@ -56,11 +55,10 @@ class CartFragment : Fragment() {
         }
 
         binding.btnPlaceOrder.setOnClickListener {
-            viewModel.placeOrder()
+            findNavController().navigate(R.id.checkoutFragment)
         }
 
         observeCart()
-        observeSubmit()
     }
 
     private fun observeCart() {
@@ -71,19 +69,9 @@ class CartFragment : Fragment() {
         }
     }
 
-    private fun observeSubmit() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.submitState.collect(::renderSubmit)
-            }
-        }
-    }
-
     private fun renderCart(state: CartState) {
         adapter.submitList(state.entries)
         binding.txtTotal.text = priceFormatter.format(state.totalPrice)
-
-        val isSubmitting = viewModel.submitState.value is CartSubmitState.Submitting
 
         if (state.isEmpty) {
             binding.recyclerCart.visibility = View.GONE
@@ -96,44 +84,7 @@ class CartFragment : Fragment() {
             binding.txtEmpty.visibility = View.GONE
             binding.checkoutContainer.visibility = View.VISIBLE
             binding.divider.visibility = View.VISIBLE
-            binding.btnPlaceOrder.isEnabled = !isSubmitting
-        }
-    }
-
-    private fun renderSubmit(state: CartSubmitState) {
-        when (state) {
-            CartSubmitState.Idle -> {
-                binding.progress.visibility = View.GONE
-                binding.btnPlaceOrder.isEnabled = !viewModel.cartState.value.isEmpty
-            }
-            CartSubmitState.Submitting -> {
-                binding.progress.visibility = View.VISIBLE
-                binding.btnPlaceOrder.isEnabled = false
-            }
-            is CartSubmitState.Success -> {
-                binding.progress.visibility = View.GONE
-                viewModel.consumeSubmitState()
-                Snackbar.make(
-                    binding.root,
-                    R.string.order_placed_success,
-                    Snackbar.LENGTH_LONG,
-                ).show()
-                findNavController().navigate(
-                    R.id.ordersFragment,
-                    null,
-                    androidx.navigation.navOptions {
-                        popUpTo(R.id.menuFragment) { inclusive = false }
-                    },
-                )
-            }
-            is CartSubmitState.Error -> {
-                binding.progress.visibility = View.GONE
-                binding.btnPlaceOrder.isEnabled = !viewModel.cartState.value.isEmpty
-                Snackbar.make(binding.root, state.message, Snackbar.LENGTH_LONG)
-                    .setAction(R.string.action_retry) { viewModel.placeOrder() }
-                    .show()
-                viewModel.consumeSubmitState()
-            }
+            binding.btnPlaceOrder.isEnabled = true
         }
     }
 

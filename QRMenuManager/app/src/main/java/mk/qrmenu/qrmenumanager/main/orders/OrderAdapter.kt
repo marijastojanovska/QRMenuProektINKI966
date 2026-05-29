@@ -11,6 +11,7 @@ import mk.qrmenu.qrmenumanager.databinding.ItemOrderBinding
 import mk.qrmenu.qrmenumanager.model.Order
 import mk.qrmenu.qrmenumanager.model.OrderItem
 import mk.qrmenu.qrmenumanager.model.OrderStatus
+import mk.qrmenu.qrmenumanager.model.PaymentMethod
 import java.text.DateFormat
 
 class OrderAdapter(
@@ -56,11 +57,42 @@ class OrderAdapter(
             val total = order.items.sumOf { it.price * it.quantity }
             binding.txtTotal.text = context.getString(R.string.order_total_format, total)
 
+            val notProvided = context.getString(R.string.value_not_provided)
+            binding.txtAddress.text = context.getString(
+                R.string.label_field_format,
+                context.getString(R.string.label_address),
+                order.customerAddress.ifBlank { notProvided },
+            )
+            binding.txtCity.text = context.getString(
+                R.string.label_field_format,
+                context.getString(R.string.label_city),
+                order.customerCity.ifBlank { notProvided },
+            )
+            binding.txtPhone.text = context.getString(
+                R.string.label_field_format,
+                context.getString(R.string.label_phone),
+                order.customerPhone.ifBlank { notProvided },
+            )
+            binding.txtPayment.text = context.getString(
+                R.string.label_field_format,
+                context.getString(R.string.label_payment_method),
+                paymentLabel(order.paymentMethod),
+            )
+
             val isPending = status == OrderStatus.PENDING
             binding.actionRow.visibility = if (isPending) View.VISIBLE else View.GONE
 
             binding.btnAccept.setOnClickListener { onAccept(order) }
             binding.btnReject.setOnClickListener { onReject(order) }
+        }
+
+        private fun paymentLabel(value: String): String {
+            val context = binding.root.context
+            return when (PaymentMethod.fromStorage(value)) {
+                PaymentMethod.CASH -> context.getString(R.string.payment_method_cash)
+                PaymentMethod.CARD -> context.getString(R.string.payment_method_card)
+                null -> value.ifBlank { context.getString(R.string.value_not_provided) }
+            }
         }
 
         private fun formatItems(items: List<OrderItem>): String {

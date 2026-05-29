@@ -33,6 +33,23 @@
     <string name="cd_remove_from_cart">Отстрани од кошничката</string>
     <string name="order_placed_success">Нарачката е испратена. Ресторанот е известен.</string>
 
+    <!-- Checkout -->
+    <string name="checkout_title">Плаќање</string>
+    <string name="hint_address">Адреса</string>
+    <string name="hint_city">Град</string>
+    <string name="hint_phone">Мобилен телефон</string>
+    <string name="payment_method_label">Начин на плаќање</string>
+    <string name="payment_cash">Готовина</string>
+    <string name="payment_card">Картичка</string>
+    <string name="hint_card_number">Број на картичка</string>
+    <string name="hint_card_expiry">ММ/ГГ</string>
+    <string name="hint_card_cvv">CVV</string>
+    <string name="hint_card_holder">Име на сопственик</string>
+    <string name="processing_payment">Се обработува плаќањето…</string>
+    <string name="action_submit_order">Потврди нарачка</string>
+    <string name="error_required_field">Задолжително</string>
+    <string name="error_invalid_card">Невалидни податоци за картичка</string>
+
     <!-- Orders -->
     <string name="orders_title">Вашите нарачки</string>
     <string name="empty_orders">Сè уште немате нарачки. Направете една од кошничката.</string>

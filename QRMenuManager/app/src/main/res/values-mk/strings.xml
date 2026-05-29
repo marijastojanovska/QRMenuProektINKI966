@@ -31,6 +31,17 @@
     <string name="order_item_format">%1$d× %2$s</string>
     <string name="empty_orders">Сè уште нема нарачки.</string>
 
+    <!-- Order delivery details -->
+    <string name="label_field_format">%1$s: %2$s</string>
+    <string name="label_delivery_details">Детали за достава</string>
+    <string name="label_address">Адреса</string>
+    <string name="label_city">Град</string>
+    <string name="label_phone">Телефон</string>
+    <string name="label_payment_method">Плаќање</string>
+    <string name="payment_method_cash">Готовина при достава</string>
+    <string name="payment_method_card">Картичка</string>
+    <string name="value_not_provided">Не е наведено</string>
+
     <!-- Notifications -->
     <string name="channel_new_orders_name">Нови нарачки</string>
     <string name="channel_new_orders_description">Известувања кога ќе пристигне нова нарачка</string>
