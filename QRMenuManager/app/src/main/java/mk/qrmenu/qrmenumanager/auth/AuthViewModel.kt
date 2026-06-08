@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -62,6 +63,28 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
                 )
             }
         }
+    }
+
+    fun signInWithGoogle(idToken: String) {
+        _state.value = AuthUiState.Loading
+
+        viewModelScope.launch {
+            try {
+                val credential = GoogleAuthProvider.getCredential(idToken, null)
+                auth.signInWithCredential(credential).await()
+                _state.value = AuthUiState.Success
+            } catch (t: Throwable) {
+                _state.value = AuthUiState.Error(
+                    t.localizedMessage ?: string(R.string.error_google_sign_in_failed)
+                )
+            }
+        }
+    }
+
+    fun onGoogleSignInError(message: String?) {
+        _state.value = AuthUiState.Error(
+            message ?: string(R.string.error_google_sign_in_failed)
+        )
     }
 
     fun reset() {

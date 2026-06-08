@@ -121,6 +121,7 @@ class MainActivity : AppCompatActivity() {
                 true
             }
             R.id.action_logout -> {
+                OrdersNotifier.stop()
                 FirebaseAuth.getInstance().signOut()
                 startActivity(
                     Intent(this, AuthActivity::class.java).addFlags(

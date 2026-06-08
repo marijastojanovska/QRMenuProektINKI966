@@ -66,6 +66,8 @@ dependencies {
     implementation(libs.firebase.firestore.ktx)
     implementation(libs.firebase.storage.ktx)
 
+    implementation(libs.play.services.auth)
+
     implementation(libs.glide)
 
     implementation(libs.zxing.core)

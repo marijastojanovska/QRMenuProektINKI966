@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.Query
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -62,7 +63,11 @@ class OrdersViewModel : ViewModel() {
                 .orderBy("createdAt", Query.Direction.DESCENDING)
                 .addSnapshotListener { snapshot, error ->
                     if (error != null) {
-                        close(error)
+                        if (error.code == FirebaseFirestoreException.Code.PERMISSION_DENIED) {
+                            close()
+                        } else {
+                            close(error)
+                        }
                         return@addSnapshotListener
                     }
                     if (snapshot != null) {
