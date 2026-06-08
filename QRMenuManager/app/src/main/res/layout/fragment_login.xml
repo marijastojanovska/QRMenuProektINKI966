@@ -98,6 +98,18 @@
             app:iconPadding="12dp"
             app:iconTint="@null" />
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_facebook_sign_in"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="@string/action_sign_in_with_facebook"
+            app:icon="@drawable/ic_facebook"
+            app:iconGravity="textStart"
+            app:iconPadding="12dp"
+            app:iconTint="@null" />
+
         <ProgressBar
             android:id="@+id/progress"
             android:layout_width="wrap_content"

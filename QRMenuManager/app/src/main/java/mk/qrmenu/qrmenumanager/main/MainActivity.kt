@@ -21,6 +21,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.facebook.login.LoginManager
 import com.google.firebase.auth.FirebaseAuth
 import mk.qrmenu.qrmenumanager.R
 import mk.qrmenu.qrmenumanager.auth.AuthActivity
@@ -122,6 +123,7 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.action_logout -> {
                 OrdersNotifier.stop()
+                LoginManager.getInstance().logOut()
                 FirebaseAuth.getInstance().signOut()
                 startActivity(
                     Intent(this, AuthActivity::class.java).addFlags(

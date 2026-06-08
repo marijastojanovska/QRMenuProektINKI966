@@ -16,6 +16,11 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.login.LoginManager
+import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -35,6 +40,9 @@ class LoginFragment : Fragment() {
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var googleSignInLauncher: ActivityResultLauncher<Intent>
 
+    private lateinit var callbackManager: CallbackManager
+    private lateinit var facebookLauncher: ActivityResultLauncher<Collection<String>>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -49,6 +57,30 @@ class LoginFragment : Fragment() {
         ) { result: ActivityResult ->
             handleGoogleSignInResult(result)
         }
+
+        callbackManager = CallbackManager.Factory.create()
+        LoginManager.getInstance().registerCallback(
+            callbackManager,
+            object : FacebookCallback<LoginResult> {
+                override fun onSuccess(result: LoginResult) {
+                    viewModel.signInWithFacebook(result.accessToken.token)
+                }
+
+                override fun onCancel() {
+                    viewModel.onFacebookSignInError(
+                        getString(R.string.error_facebook_sign_in_cancelled)
+                    )
+                }
+
+                override fun onError(error: FacebookException) {
+                    viewModel.onFacebookSignInError(error.localizedMessage)
+                }
+            }
+        )
+
+        facebookLauncher = registerForActivityResult(
+            LoginManager.getInstance().createLogInActivityResultContract(callbackManager, null)
+        ) { /* result delivered via FacebookCallback above */ }
     }
 
     override fun onCreateView(
@@ -74,6 +106,10 @@ class LoginFragment : Fragment() {
             startGoogleSignIn()
         }
 
+        binding.btnFacebookSignIn.setOnClickListener {
+            startFacebookSignIn()
+        }
+
         binding.txtGoToRegister.setOnClickListener {
             findNavController().navigate(R.id.action_login_to_register)
         }
@@ -85,6 +121,7 @@ class LoginFragment : Fragment() {
                     val enabled = state !is AuthUiState.Loading
                     binding.btnLogin.isEnabled = enabled
                     binding.btnGoogleSignIn.isEnabled = enabled
+                    binding.btnFacebookSignIn.isEnabled = enabled
                     when (state) {
                         is AuthUiState.Error -> {
                             binding.layoutEmail.error = null
@@ -108,6 +145,11 @@ class LoginFragment : Fragment() {
         googleSignInClient.signOut().addOnCompleteListener {
             googleSignInLauncher.launch(googleSignInClient.signInIntent)
         }
+    }
+
+    private fun startFacebookSignIn() {
+        LoginManager.getInstance().logOut()
+        facebookLauncher.launch(listOf("email", "public_profile"))
     }
 
     private fun handleGoogleSignInResult(result: ActivityResult) {

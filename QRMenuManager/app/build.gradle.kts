@@ -67,6 +67,7 @@ dependencies {
     implementation(libs.firebase.storage.ktx)
 
     implementation(libs.play.services.auth)
+    implementation(libs.facebook.login)
 
     implementation(libs.glide)
 

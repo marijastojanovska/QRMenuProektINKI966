@@ -67,7 +67,13 @@
     <string name="action_login">Login</string>
     <string name="action_register">Register</string>
     <string name="action_sign_in_with_google">Sign in with Google</string>
+    <string name="action_sign_in_with_facebook">Sign in with Facebook</string>
     <string name="separator_or">OR</string>
+
+    <!-- Facebook SDK config (replace REPLACE_ME with values from developers.facebook.com) -->
+    <string name="facebook_app_id" translatable="false">REPLACE_ME_FACEBOOK_APP_ID</string>
+    <string name="facebook_client_token" translatable="false">REPLACE_ME_FACEBOOK_CLIENT_TOKEN</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fbREPLACE_ME_FACEBOOK_APP_ID</string>
     <string name="action_save">Save</string>
     <string name="action_delete">Delete</string>
     <string name="action_logout">Logout</string>
@@ -95,6 +101,8 @@
     <string name="error_login_failed">Login failed</string>
     <string name="error_google_sign_in_failed">Google sign-in failed</string>
     <string name="error_google_sign_in_cancelled">Google sign-in cancelled</string>
+    <string name="error_facebook_sign_in_failed">Facebook sign-in failed</string>
+    <string name="error_facebook_sign_in_cancelled">Facebook sign-in cancelled</string>
     <string name="error_register_failed">Registration failed</string>
     <string name="error_product_not_found">Product not found</string>
     <string name="error_load_failed">Failed to load</string>

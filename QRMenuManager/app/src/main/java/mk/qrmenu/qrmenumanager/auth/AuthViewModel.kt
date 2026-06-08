@@ -3,6 +3,7 @@ package mk.qrmenu.qrmenumanager.auth
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -84,6 +85,28 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
     fun onGoogleSignInError(message: String?) {
         _state.value = AuthUiState.Error(
             message ?: string(R.string.error_google_sign_in_failed)
+        )
+    }
+
+    fun signInWithFacebook(accessToken: String) {
+        _state.value = AuthUiState.Loading
+
+        viewModelScope.launch {
+            try {
+                val credential = FacebookAuthProvider.getCredential(accessToken)
+                auth.signInWithCredential(credential).await()
+                _state.value = AuthUiState.Success
+            } catch (t: Throwable) {
+                _state.value = AuthUiState.Error(
+                    t.localizedMessage ?: string(R.string.error_facebook_sign_in_failed)
+                )
+            }
+        }
+    }
+
+    fun onFacebookSignInError(message: String?) {
+        _state.value = AuthUiState.Error(
+            message ?: string(R.string.error_facebook_sign_in_failed)
         )
     }
 
